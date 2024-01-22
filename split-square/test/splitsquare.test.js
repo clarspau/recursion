@@ -1,14 +1,11 @@
 "use strict";
 
-/* Tests for splitsquare.js
- *
- * Joel Burton <joel@joelburton.com>
- *
- */
+/** Tests for splitsquare.js */
+
 
 if (typeof require === "function") {
     var assert = require("chai").assert;
-    var {dump, is_valid, simplify, add} = require("../splitsquare");
+    var { dump, is_valid, simplify, add } = require("../splitsquare");
 }
 
 
@@ -39,7 +36,7 @@ suite("is_valid", function () {
     });
 
     test("should reject wrong types", function () {
-        assert.isFalse(is_valid({"hey": "there"}));
+        assert.isFalse(is_valid({ "hey": "there" }));
         assert.isFalse(is_valid("yo"));
         assert.isFalse(is_valid("1"));
     });
