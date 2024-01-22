@@ -47,10 +47,20 @@ Of course, these can nested deeply and still work::
 
 
 def dump(s):
-    """Print each square on a new line."""
+    """Prints each square on a new line."""
+
+    # Base case: it's a simple square
+    if s == 0 or s == 1:
+        print(s)
+
+    # Otherwise, recurse
+    else:
+        # Print each quadrant
+        for q in s:
+            dump(q)
 
 
 if __name__ == "__main__":
     import doctest
     if doctest.testmod().failed == 0:
-        print "\n*** ALL TESTS PASS; NICE JOB!\n"
+        print("\n*** ALL TESTS PASS; NICE JOB!\n")
