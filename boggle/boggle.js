@@ -50,10 +50,55 @@ function makeBoard(boardString) {
   return board;
 }
 
+
+/** 
+   * Recursively searches for the given word on the board starting at coordinates (x, y).
+   * 
+   * Base cases:
+   * 1. If the current letter does not match the first letter of the word, return false.
+   * 2. If the letter at this location has been visited before in the current path, return false.
+   * 3. If the word has only one letter left, we've found the complete word, return true.
+   * 
+   * For each valid neighbor, recursively searches for the next letter in the word.
+   * If any of the recursive calls return true, it means the word is found, and we return true.
+   * 
+   * If no valid neighbor leads to the completion of the word, return false for this path.
+   */
+
+function findWord(board, word, y, x, seen) {
+  // Base cases
+  if (board[y]?.[x] !== word[0]) return false;
+  if (seen.has(`${y}-${x}`)) return false;
+  if (word.length === 1) return true;
+
+  // Mark the current letter as seen
+  seen = new Set(seen);
+  seen.add(`${y}-${x}`);
+
+  // Recursively search for the remaining letters in all directions
+  return (
+    (y > 0 && findWord(board, word.slice(1), y - 1, x, seen)) ||
+    (y < 4 && findWord(board, word.slice(1), y + 1, x, seen)) ||
+    (x > 0 && findWord(board, word.slice(1), y, x - 1, seen)) ||
+    (x < 4 && findWord(board, word.slice(1), y, x + 1, seen))
+  );
+}
+
+
 function find(board, word) {
   /** Can word be found in board? */
-  // TODO
+
+  // find the first letter of the word in the board
+  for (let y = 0; y < 5; y++) {
+    for (let x = 0; x < 5; x++) {
+
+      // if the word is found, return true
+      if (findWord(board, word, y, x, new Set())) return true;
+    }
+  }
+  return false;
 }
+
 
 // EXAMPLE TEST
 
