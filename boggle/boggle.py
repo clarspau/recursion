@@ -108,6 +108,60 @@ def make_board(board_string):
     return board
 
 
+def find_from(board, word, y, x, seen):
+    """Recursively searches for the given word on the board, starting at coordinates (x, y)."""
+
+    # Base case: This isn't the letter we're looking for.
+    if board[y][x] != word[0]:
+        print(f"%-6s{y},{x}  %-3s%-8s%-30s" % ("NO", board[y][x], word, seen))
+        return False
+
+    # Base case: We've used this letter before in this current path.
+    if (y, x) in seen:
+        print(f"%-6s{y},{x}  %-3s%-8s%-30s" %
+              ("SEEN", board[y][x], word, seen))
+        return False
+
+    # Base case: We are down to the last letter — so we win!
+    if len(word) == 1:
+        print(f"%-6s{y},{x}  %-3s%-8s%-30s" % ("WIN", board[y][x], word, seen))
+        return True
+
+    # Otherwise, this letter is good, so note that we've seen it,
+    # and try all of its neighbors for the first letter of the rest of the word.
+
+    print(f"%-6s{y},{x}  %-3s%-8s%-30s" % ("OK", board[y][x], word, seen))
+
+    seen = seen | {(y, x)}
+
+    if y > 0 and find_from(board, word[1:], y - 1, x, seen):
+        return True
+
+    if y < 4 and find_from(board, word[1:], y + 1, x, seen):
+        return True
+
+    if x > 0 and find_from(board, word[1:], y, x - 1, seen):
+        return True
+
+    if x < 4 and find_from(board, word[1:], y, x + 1, seen):
+        return True
+
+    # Couldn't find the next letter, so this path is dead.
+    return False
+
+
+def find(board, word):
+    """Checks if the word can be found on the board."""
+
+    print("%-6s%s,%s  %-3s%-8s%-30s" % ("out", "y", "x", "bd", "word", "seen"))
+
+    for y in range(0, 5):
+        for x in range(0, 5):
+            if find_from(board, word, y, x, seen=set()):
+                return True
+
+    return False
+
 
 def find(board, word):
     """Can word be found in board?"""
